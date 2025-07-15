@@ -8,12 +8,15 @@ A minimal, fast, and student-friendly PDF compression web app built using **Pyth
 
 This application solves a common frustration among students: **large PDF assignment file sizes** that exceed upload limits on university portals or emails. Instead of using sketchy online tools or installing heavy software, this lightweight web app gives you quick, quality-controlled PDF compression right from your browser.
 
+⚡ **Completely Offline** – Unlike most online tools that require high-speed internet, this app works entirely offline once set up. You can compress PDFs anytime, anywhere — perfect for students with limited or no internet access.
+
 ## 🚀 Features
 
 - 📄 Upload any PDF file and compress it in seconds
 - 🧠 Choose from multiple quality levels: screen, ebook, printer, prepress
 - 💾 Download compressed files with size info
 - 🌙 Sleek dark mode UI for late-night usage
+- 📶 No internet? No problem — fully functional offline for uninterrupted productivity
 - 🌀 Loading spinner and blur effect during compression
 - 🔁 Auto-redirect or manual return to homepage after download
 
@@ -22,7 +25,6 @@ This application solves a common frustration among students: **large PDF assignm
 - **Backend**: Flask (Python)
 - **Compression Engine**: Ghostscript
 - **Frontend**: HTML, CSS (Dark UI), JS
-- **Hosting**: Localhost (can be deployed to Heroku, Railway, etc.)
 
 ## 📁 Project Structure
 
@@ -30,8 +32,12 @@ This application solves a common frustration among students: **large PDF assignm
 PDF_Compressor/
 ├── templates/
 │   └── index.html          # Main frontend UI
+├── static/                 # Static files (CSS & JS)
+│   ├── styles.css          # Custom dark theme styles
+│   └── script.js           # Frontend interactivity (spinner, blur, etc.)
 ├── uploads/                # Stores uploaded and compressed files
 ├── app.py                  # Flask app logic
+├── requirements.txt        # Python dependencies
 └── README.md               # Project documentation
 ```
 
@@ -85,7 +91,7 @@ This tool was built with students in mind — especially those who struggle with
 - Uploading large assignment PDFs to college portals (with size limits)
 - Emailing presentations or scanned notes
 - Sharing lecture notes on WhatsApp, Telegram, etc.
-
+- Compressing files in low or no internet zones — thanks to full **offline support**
 With no login, no ads, no tracking — it just gets the job done.
 
 ## 🧪 Compression Quality Options
@@ -102,7 +108,6 @@ With no login, no ads, no tracking — it just gets the job done.
 - Drag & Drop Upload
 - Real-time size preview
 - Multi-file compression
-- Cloud deployment (Render/Heroku)
 
 ## 🤝 Contributing
 

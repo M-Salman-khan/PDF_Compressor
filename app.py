@@ -1,16 +1,24 @@
 from flask import Flask, request, render_template, send_from_directory, redirect, url_for
 import os
 import subprocess
+import platform
 
 app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-GS_PATH = "C:\\Program Files\\gs\\gs10.05.1\\bin\\gswin64c.exe"
+# ✅ Cross-platform Ghostscript command
+def get_ghostscript_cmd():
+    if platform.system() == "Windows":
+        return "C:\\Program Files\\gs\\gs10.05.1\\bin\\gswin64c.exe"
+    else:
+        return "gs"  # Works on Render (Linux/Docker)
 
-def compress_pdf(input_path, output_path, quality="ebook"):
+# ✅ Compression function
+def compress_pdf_ghostscript(input_path, output_path, quality="screen"):
+    gs_cmd = get_ghostscript_cmd()
     command = [
-        GS_PATH,
+        gs_cmd,
         "-sDEVICE=pdfwrite",
         "-dCompatibilityLevel=1.4",
         f"-dPDFSETTINGS=/{quality}",
@@ -22,6 +30,7 @@ def compress_pdf(input_path, output_path, quality="ebook"):
     ]
     subprocess.run(command, check=True)
 
+# ✅ Home route
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
@@ -38,7 +47,7 @@ def index():
         file.save(input_path)
 
         try:
-            compress_pdf(input_path, output_path, quality=quality)
+            compress_pdf_ghostscript(input_path, output_path, quality=quality)
             size_kb = round(os.path.getsize(output_path) / 1024, 2)
         except Exception as e:
             return f"Compression failed: {e}", 500
@@ -47,13 +56,14 @@ def index():
                                download=True,
                                filename=compressed_name,
                                filesize=size_kb)
-    
+
     return render_template("index.html", download=False)
 
+# ✅ File download route
 @app.route("/download/<filename>")
 def download_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename, as_attachment=True)
 
-
+# ✅ App entrypoint (Docker support)
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
